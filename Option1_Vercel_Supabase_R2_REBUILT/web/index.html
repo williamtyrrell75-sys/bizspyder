@@ -1,0 +1,19 @@
+
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>BizSpyder AI — Downloads</title>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;max-width:720px;margin:40px auto;padding:0 16px}.btns button{padding:10px 14px;margin-right:8px;border-radius:8px;border:1px solid #ddd;cursor:pointer}#msg{margin-top:12px;padding:10px;border:1px dashed #ccc;border-radius:8px;display:none}</style>
+</head><body>
+<h1>Download BizSpyder AI</h1>
+<p>Select your OS. We'll generate your license key and start the download.</p>
+<div class="btns"><button onclick="dl('win')">Windows</button><button onclick="dl('mac')">macOS</button><button onclick="dl('linux')">Linux</button></div>
+<div id="msg"></div>
+<script>
+async function dl(os){
+  const res = await fetch('/api/download',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({os,ref:localStorage.getItem('affiliate_ref')||undefined})});
+  const data = await res.json(); if(!res.ok){ alert(data.error||'Error'); return; }
+  const box = document.getElementById('msg'); box.style.display='block'; box.textContent='Your license key: '+data.license_key+' (copied)';
+  try{ await navigator.clipboard.writeText(data.license_key);}catch(e){}
+  location.href = data.installer_url;
+}
+</script>
+</body></html>
